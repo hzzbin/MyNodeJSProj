@@ -33,7 +33,7 @@ function show(res) {
     + '<p><input type="submit" value="Add Item" /></p>'
     + '</form></body></html>';
     res.setHeader('Content-Type', 'text/html');
-    res.serHeader('Content-Length', Buffer.byteLength(html));
+    res.setHeader('Content-Length', Buffer.byteLength(html));
     res.end(html);
 }
 
