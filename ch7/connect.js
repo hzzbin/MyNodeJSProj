@@ -82,6 +82,69 @@ var app = connect()
     .use(hello)
     .listen(3000);
 
+//favicon地址栏和收藏栏里的小图标
+connect()
+    .use(connect.favicon(__dirname + '/public/favicon.ico'))
+    .use(connect.logger())
+    .use(function(req, res) {
+    res.end('Hello World!\n');
+});
+
+//methodOverride:伪造HTTP方法
+//...
+
+//vhost():虚拟主机
+var connect = require('connect');
+
+var server = connect();
+var app = require('./sites/expressjs.dev');
+
+server.use(connect.vhost('expressjs.dev', app));
+
+server.listen(3000);
+
+var http = require('http');
+module.exports = http.createServer(function(req, res){
+    res.end('hello from expressjs.com\n');
+});
+
+
+//使用session的页面浏览计数器
+var connect = require('connect');
+
+var hour = 3600000;
+var sessionOpts = {
+    key: 'myapp_sid',
+    cookie: { maxAge: hour * 24, secure: true } //设置过期时间和只在使用HTTPS时才发送会话cookie
+};
+
+var app = connect()
+    .use(connect.favicon())
+    .use(connect.cookieParser('keyboard cat'))
+    .use(connect.session())
+    .use(function(req, res, next){
+        var sess = req.session;
+        if (sess.views) {
+            res.setHeader('Content-Type', 'text/html');
+            res.write('<p>views: ' + sess.views + '</p>');
+            res.end();
+            sess.views++;
+        } else {
+            sess.views = 1;
+            res.end('welcome to the session demo. refresh!');
+        }
+    });
+
+app.listen(3000);
+
+//connect安全中间件
+//basicAuth
+
+//csrf()
+
+//errorHandler():开发错误处理
+
+
 
 
 
